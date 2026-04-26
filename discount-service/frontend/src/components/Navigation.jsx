@@ -22,7 +22,7 @@ const Navigation = () => {
         {/* Logo */}
         <div className="p-6 border-b border-white/20">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-500 via-emerald-400 to-accent-500 bg-clip-text text-transparent animate-gradient">
-            DiscountHub
+            Tolk
           </h1>
           <p className="text-xs text-gray-600 mt-1 font-medium">Скидки и Промо</p>
         </div>
@@ -76,7 +76,7 @@ const Navigation = () => {
       <header className="md:hidden nav-glass safe-area-top">
         <div className="flex items-center justify-between px-4 py-3">
           <h1 className="text-xl font-bold bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
-            DiscountHub
+            Tolk
           </h1>
           <button 
             onClick={toggleMobileMenu}
