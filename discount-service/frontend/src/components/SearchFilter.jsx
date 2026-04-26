@@ -11,35 +11,37 @@ const SearchFilter = ({
   onReset 
 }) => {
   return (
-    <div className="bg-white rounded-xl shadow-card p-4 mb-6">
-      {/* Search Bar */}
+    <div className="glass-card-premium p-5 mb-6">
+      {/* Search Bar - Liquid */}
       <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
         <input
           type="text"
           placeholder="Поиск скидок, товаров, магазинов..."
           value={searchValue}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="input-field pl-10"
+          className="input-liquid pl-12"
         />
         {searchValue && (
-          <button
+          <motion.button
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
             onClick={() => onSearchChange('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 hover:bg-white/50 rounded-lg transition-all text-gray-400 hover:text-gray-600"
           >
             <X className="w-4 h-4" />
-          </button>
+          </motion.button>
         )}
       </div>
       
-      {/* Filters */}
-      <div className="flex flex-wrap gap-2">
+      {/* Filters - Glass Pills */}
+      <div className="flex flex-wrap gap-2.5">
         {/* Category Filter */}
-        <div className="relative">
+        <div className="relative group">
           <select
             value={filters.category || ''}
             onChange={(e) => onFilterChange({ category: e.target.value || null })}
-            className="btn-secondary pr-8 appearance-none cursor-pointer"
+            className="btn-liquid-secondary pr-9 appearance-none cursor-pointer text-sm"
           >
             <option value="">Все категории</option>
             {categories?.map((cat) => (
@@ -48,15 +50,15 @@ const SearchFilter = ({
               </option>
             ))}
           </select>
-          <Filter className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          <Filter className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none group-hover:text-primary-500 transition-colors" />
         </div>
         
         {/* Store Filter */}
-        <div className="relative">
+        <div className="relative group">
           <select
             value={filters.store || ''}
             onChange={(e) => onFilterChange({ store: e.target.value || null })}
-            className="btn-secondary pr-8 appearance-none cursor-pointer"
+            className="btn-liquid-secondary pr-9 appearance-none cursor-pointer text-sm"
           >
             <option value="">Все магазины</option>
             {stores?.map((store) => (
@@ -65,15 +67,15 @@ const SearchFilter = ({
               </option>
             ))}
           </select>
-          <Filter className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          <Filter className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none group-hover:text-primary-500 transition-colors" />
         </div>
         
         {/* Min Discount */}
-        <div className="relative">
+        <div className="relative group">
           <select
             value={filters.minDiscount}
             onChange={(e) => onFilterChange({ minDiscount: Number(e.target.value) })}
-            className="btn-secondary pr-8 appearance-none cursor-pointer"
+            className="btn-liquid-secondary pr-9 appearance-none cursor-pointer text-sm"
           >
             <option value="0">Любая скидка</option>
             <option value="10">От 10%</option>
@@ -81,47 +83,76 @@ const SearchFilter = ({
             <option value="30">От 30%</option>
             <option value="50">От 50%</option>
           </select>
-          <Percent className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          <Percent className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none group-hover:text-accent-500 transition-colors" />
         </div>
         
         {/* Reset Filters */}
         {(filters.category || filters.store || filters.minDiscount > 0) && (
-          <button onClick={onReset} className="btn-secondary text-sm">
+          <motion.button 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            onClick={onReset} 
+            className="btn-liquid-secondary text-sm text-accent-600 hover:text-accent-700"
+          >
             Сбросить
-          </button>
+          </motion.button>
         )}
       </div>
       
-      {/* Active Filters Tags */}
+      {/* Active Filters Tags - Glass */}
       {(filters.category || filters.store || filters.minDiscount > 0) && (
         <motion.div 
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
-          className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-gray-100"
+          className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-white/20"
         >
           {filters.category && (
-            <span className="badge badge-primary flex items-center gap-1">
+            <motion.span 
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              className="badge-glass-primary flex items-center gap-1.5"
+            >
               {categories?.find(c => c.id === filters.category)?.name}
-              <button onClick={() => onFilterChange({ category: null })}>
-                <X className="w-3 h-3" />
-              </button>
-            </span>
+              <motion.button 
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => onFilterChange({ category: null })}
+              >
+                <X className="w-3.5 h-3.5" />
+              </motion.button>
+            </motion.span>
           )}
           {filters.store && (
-            <span className="badge badge-primary flex items-center gap-1">
+            <motion.span 
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              className="badge-glass-primary flex items-center gap-1.5"
+            >
               {stores?.find(s => s.id === filters.store)?.name}
-              <button onClick={() => onFilterChange({ store: null })}>
-                <X className="w-3 h-3" />
-              </button>
-            </span>
+              <motion.button 
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => onFilterChange({ store: null })}
+              >
+                <X className="w-3.5 h-3.5" />
+              </motion.button>
+            </motion.span>
           )}
           {filters.minDiscount > 0 && (
-            <span className="badge badge-primary flex items-center gap-1">
+            <motion.span 
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              className="badge-glass-accent flex items-center gap-1.5"
+            >
               От {filters.minDiscount}%
-              <button onClick={() => onFilterChange({ minDiscount: 0 })}>
-                <X className="w-3 h-3" />
-              </button>
-            </span>
+              <motion.button 
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => onFilterChange({ minDiscount: 0 })}
+              >
+                <X className="w-3.5 h-3.5" />
+              </motion.button>
+            </motion.span>
           )}
         </motion.div>
       )}

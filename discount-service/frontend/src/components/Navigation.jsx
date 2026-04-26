@@ -17,44 +17,54 @@ const Navigation = () => {
 
   return (
     <>
-      {/* Desktop Navigation */}
-      <nav className="hidden md:flex fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-gray-200 flex-col z-50">
+      {/* Desktop Navigation - Liquid Glass */}
+      <nav className="hidden md:flex fixed left-0 top-0 bottom-0 w-72 nav-glass flex-col z-50">
         {/* Logo */}
-        <div className="p-6 border-b border-gray-100">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
+        <div className="p-6 border-b border-white/20">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-500 via-emerald-400 to-accent-500 bg-clip-text text-transparent animate-gradient">
             DiscountHub
           </h1>
-          <p className="text-xs text-gray-500 mt-1">Скидки и Промо</p>
+          <p className="text-xs text-gray-600 mt-1 font-medium">Скидки и Промо</p>
         </div>
         
         {/* Nav Items */}
-        <div className="flex-1 p-4 space-y-1">
+        <div className="flex-1 p-4 space-y-2">
           {navItems.map((item) => {
             const Icon = item.icon
             const isActive = currentTab === item.id
             
             return (
-              <button
+              <motion.button
                 key={item.id}
                 onClick={() => setTab(item.id)}
-                className={`nav-item w-full ${isActive ? 'nav-item-active' : ''}`}
+                whileHover={{ scale: 1.02, x: 4 }}
+                whileTap={{ scale: 0.98 }}
+                className={`w-full ${isActive ? 'nav-item-glass-active' : 'nav-item-glass'}`}
               >
-                <Icon className="w-5 h-5" />
-                <span>{item.label}</span>
-              </button>
+                <div className={`p-2 rounded-lg ${isActive ? 'bg-primary-500/20' : ''}`}>
+                  <Icon className={`w-5 h-5 ${isActive ? 'text-primary-600' : ''}`} />
+                </div>
+                <span className="font-medium">{item.label}</span>
+                {isActive && (
+                  <motion.div 
+                    layoutId="activeNav"
+                    className="ml-auto w-1.5 h-1.5 rounded-full bg-primary-500"
+                  />
+                )}
+              </motion.button>
             )
           })}
         </div>
         
-        {/* Subscription CTA */}
+        {/* Subscription CTA - Glass */}
         {!isAuthenticated && (
-          <div className="p-4 border-t border-gray-100">
-            <div className="bg-gradient-to-br from-primary-50 to-accent-50 rounded-xl p-4">
+          <div className="p-4 border-t border-white/20">
+            <div className="glass-card-premium p-4">
               <h3 className="font-semibold text-gray-900 mb-1">Premium доступ</h3>
               <p className="text-xs text-gray-600 mb-3">
                 Получите доступ ко всем функциям сервиса
               </p>
-              <button className="btn-primary w-full text-sm">
+              <button className="btn-liquid-primary w-full text-sm">
                 Попробовать бесплатно
               </button>
             </div>
@@ -62,15 +72,15 @@ const Navigation = () => {
         )}
       </nav>
       
-      {/* Mobile Header */}
-      <header className="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50 safe-area-top">
+      {/* Mobile Header - Liquid Glass */}
+      <header className="md:hidden nav-glass safe-area-top">
         <div className="flex items-center justify-between px-4 py-3">
           <h1 className="text-xl font-bold bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
             DiscountHub
           </h1>
           <button 
             onClick={toggleMobileMenu}
-            className="p-2 hover:bg-gray-100 rounded-lg"
+            className="p-2 hover:bg-white/50 rounded-xl transition-all"
           >
             {isMobileMenuOpen ? (
               <X className="w-6 h-6 text-gray-600" />
@@ -87,7 +97,7 @@ const Navigation = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          className="md:hidden fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
           onClick={toggleMobileMenu}
         >
           <motion.div
@@ -95,36 +105,37 @@ const Navigation = () => {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25 }}
-            className="absolute right-0 top-0 bottom-0 w-64 bg-white"
+            className="absolute right-0 top-0 bottom-0 w-72 nav-glass"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+            <div className="p-4 border-b border-white/20 flex items-center justify-between">
               <h2 className="font-semibold text-gray-900">Меню</h2>
               <button 
                 onClick={toggleMobileMenu}
-                className="p-2 hover:bg-gray-100 rounded-lg"
+                className="p-2 hover:bg-white/50 rounded-xl transition-all"
               >
                 <X className="w-5 h-5 text-gray-600" />
               </button>
             </div>
             
-            <div className="p-4 space-y-1">
+            <div className="p-4 space-y-2">
               {navItems.map((item) => {
                 const Icon = item.icon
                 const isActive = currentTab === item.id
                 
                 return (
-                  <button
+                  <motion.button
                     key={item.id}
                     onClick={() => {
                       setTab(item.id)
                       toggleMobileMenu()
                     }}
-                    className={`nav-item w-full ${isActive ? 'nav-item-active' : ''}`}
+                    whileTap={{ scale: 0.98 }}
+                    className={`w-full ${isActive ? 'nav-item-glass-active' : 'nav-item-glass'}`}
                   >
-                    <Icon className="w-5 h-5" />
-                    <span>{item.label}</span>
-                  </button>
+                    <Icon className={`w-5 h-5 ${isActive ? 'text-primary-600' : ''}`} />
+                    <span className="font-medium">{item.label}</span>
+                  </motion.button>
                 )
               })}
             </div>
@@ -132,26 +143,27 @@ const Navigation = () => {
         </motion.div>
       )}
       
-      {/* Mobile Bottom Navigation */}
-      <nav className="mobile-bottom-nav md:hidden">
-        <div className="flex items-center justify-around">
+      {/* Mobile Bottom Navigation - Liquid Glass */}
+      <nav className="fixed bottom-0 left-0 right-0 nav-glass safe-area-bottom md:hidden border-t border-white/20">
+        <div className="flex items-center justify-around px-2 py-2">
           {navItems.slice(0, 5).map((item) => {
             const Icon = item.icon
             const isActive = currentTab === item.id
             
             return (
-              <button
+              <motion.button
                 key={item.id}
                 onClick={() => setTab(item.id)}
-                className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all ${
+                whileTap={{ scale: 0.9 }}
+                className={`flex flex-col items-center gap-1 p-3 rounded-xl transition-all ${
                   isActive 
-                    ? 'text-primary-600 bg-primary-50' 
-                    : 'text-gray-500 hover:text-gray-700'
+                    ? 'text-primary-600 bg-primary-500/10' 
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-white/30'
                 }`}
               >
                 <Icon className={`w-6 h-6 ${isActive ? 'fill-current' : ''}`} />
-                <span className="text-xs">{item.label}</span>
-              </button>
+                <span className="text-[10px] font-medium">{item.label}</span>
+              </motion.button>
             )
           })}
         </div>

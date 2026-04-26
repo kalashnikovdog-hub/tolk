@@ -5,25 +5,46 @@ node_modules/
 # Build artifacts
 dist/
 build/
-target/
+*.min.js
+*.min.css
+*.bundle.js
 
-# Go specific
-*.o
-*.a
-*.so
-*.exe
-*.dll
-*.out
-*.obj
-
-# Environment
+# Environment variables
 .env
 .env.local
 *.env.*
 
-# Editors
+# Logs
+*.log
+
+# Coverage reports
+coverage/
+htmlcov/
+*.coverage
+
+# IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
 *.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.nox/
+```
