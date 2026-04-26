@@ -26,19 +26,4 @@ target/
 .idea/
 *.swp
 *.swo
-
-# Logs and temp files
-*.log
 *.tmp
-
-# System files
-.DS_Store
-Thumbs.db
-
-# Python (if any Python files exist in project)
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-```
