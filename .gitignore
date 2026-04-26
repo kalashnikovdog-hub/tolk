@@ -1,33 +1,78 @@
 ```
-# Dependencies
-node_modules/
-
-# Build artifacts
-dist/
-build/
-*.js.map
-
-# Environment
-.env
-.env.local
-*.env.*
-
-# Editors
-.vscode/
-.idea/
-
 # Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-
-# Logs and temp files
+.Python
+env/
+venv/
+.venv/
+.ENV
+.ENV.db
+.ENV.local
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
 *.log
-*.tmp
+*.pot
+*.pyc
+*.pyo
+*.pyd
+.MF
+tags
+TAGS
 *.swp
+*.swo
+*~
+.pytest_cache/
+.mypy_cache/
+.hypothesis/
 
-# OS
+# Alembic
+alembic/versions/*.py
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 ```

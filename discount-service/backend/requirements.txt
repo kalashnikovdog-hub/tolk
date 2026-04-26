@@ -2,6 +2,7 @@
 fastapi==0.109.0
 uvicorn[standard]==0.27.0
 python-multipart==0.0.6
+starlette==0.35.1
 
 # Database
 sqlalchemy==2.0.25
@@ -33,12 +34,14 @@ lxml==5.1.0
 selenium==4.16.0
 playwright==1.40.0
 
+# Retry logic
+tenacity==8.2.3
+
 # Task queue
 celery==5.3.6
 
 # Utils
 python-dotenv==1.0.0
-tenacity==8.2.3
 
 # Monitoring
 prometheus-client==0.19.0
