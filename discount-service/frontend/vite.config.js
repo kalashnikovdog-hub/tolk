@@ -10,8 +10,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'DiscountHub - Скидки и Промо',
-        short_name: 'DiscountHub',
+        name: 'Tolk - Скидки и Промо',
+        short_name: 'Tolk',
         description: 'Сервис поиска скидок, промо-акций и купонов',
         theme_color: '#10B981',
         background_color: '#ffffff',

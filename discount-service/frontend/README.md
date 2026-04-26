@@ -1,4 +1,4 @@
-# DiscountHub PWA - Фронтенд
+# Tolk PWA - Фронтенд
 
 Современное Progressive Web App для поиска и управления скидками.
 
