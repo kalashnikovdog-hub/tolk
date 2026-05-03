@@ -2,6 +2,17 @@
 
 Модернизированная версия платформы с улучшенной отказоустойчивостью и производительностью.
 
+## 📚 Документация
+
+| Документ | Описание |
+|----------|----------|
+| [📖 Руководство по запуску](./docs/SETUP_GUIDE.md) | Детальная инструкция по установке и запуску на локальном сервере |
+| [📝 Changelog](./docs/CHANGELOG.md) | История всех изменений проекта по версиям |
+| [📋 Release Notes](./docs/RELEASE_NOTES.md) | Подробные заметки о релизах с техническими деталями |
+| [🔧 Команды для разработки](./docs/COMMANDS.md) | Справочник всех команд для разработки, тестирования и деплоя |
+
+---
+
 ## 🚀 Улучшения по сравнению с v1
 
 | Аспект | v1 | v2 |
@@ -182,226 +193,98 @@ breaker := circuitbreaker.New(circuitbreaker.Config{
 - Docker & Docker Compose
 - kubectl (для Kubernetes)
 
+> **💡 Совет:** Для полной инструкции по запуску см. [Руководство по запуску](./docs/SETUP_GUIDE.md)
+
 ---
 
-## 📖 Детальная инструкция по запуску на локальном сервере
+## 🚀 Быстрый старт
 
-### Шаг 1: Подготовка окружения
-
-#### 1.1 Установка Go
-```bash
-# macOS
-brew install go@1.21
-
-# Linux
-wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz
-sudo tar -xvf go1.21.0.linux-amd64.tar.gz -C /usr/local
-export PATH=$PATH:/usr/local/go/bin
-
-# Проверка версии
-go version
-```
-
-#### 1.2 Установка Node.js
-```bash
-# macOS
-brew install node@20
-
-# Linux (Ubuntu/Debian)
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-# Проверка версии
-node --version
-npm --version
-```
-
-#### 1.3 Установка Docker
-```bash
-# macOS/Windows - скачать с https://docker.com
-# Linux
-curl -fsSL https://get.docker.com | sh
-sudo usermod -aG docker $USER
-
-# Проверка
-docker --version
-docker compose version
-```
-
-### Шаг 2: Клонирование репозитория
+### Запуск через Docker Compose (рекомендуется)
 
 ```bash
+# Клонирование репозитория
 git clone <repository-url>
 cd tolk-discount
+
+# Запуск всех сервисов
+docker compose up -d
+
+# Проверка работоспособности
+curl http://localhost:8080/health
+curl http://localhost:3000
+
+# Просмотр логов
+docker compose logs -f
 ```
 
-### Шаг 3: Запуск Backend (Go)
+### Локальный запуск Backend (Go)
 
-#### 3.1 Установка зависимостей
 ```bash
 cd backend
 go mod download
-```
-
-#### 3.2 Настройка переменных окружения
-Создайте файл `.env` в папке `backend`:
-```bash
-# Server
-PORT=8080
-ENV=development
-
-# Database
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=tolk_discount
-DB_USER=postgres
-DB_PASSWORD=postgres
-
-# Redis
-REDIS_HOST=localhost
-REDIS_PORT=6379
-REDIS_PASSWORD=
-
-# NATS
-NATS_URL=nats://localhost:4222
-
-# JWT
-JWT_SECRET=your-secret-key-here
-JWT_EXPIRY=24h
-```
-
-#### 3.3 Запуск миграций БД (если требуется)
-```bash
-make migrate
-```
-
-#### 3.4 Запуск сервера разработки
-```bash
-# Через Makefile
 make run
-
-# Или напрямую
-go run cmd/main.go
+# или: go run cmd/main.go
 ```
 
-Backend будет доступен по адресу: `http://localhost:8080`
+Backend доступен: `http://localhost:8080`
 
-#### 3.5 Запуск тестов
-```bash
-make test
-```
+### Локальный запуск Frontend (Next.js)
 
-#### 3.6 Сборка бинарного файла
-```bash
-make build
-# Бинарный файл появится в ./bin/server
-```
-
-### Шаг 4: Запуск Frontend (Next.js)
-
-#### 4.1 Установка зависимостей
 ```bash
 cd frontend
 npm install
-```
-
-#### 4.2 Настройка переменных окружения
-Создайте файл `.env.local` в папке `frontend`:
-```bash
-NEXT_PUBLIC_API_URL=http://localhost:8080
-NEXT_PUBLIC_APP_NAME=Tolk Discount
-```
-
-#### 4.3 Запуск сервера разработки
-```bash
 npm run dev
 ```
 
-Frontend будет доступен по адресу: `http://localhost:3000`
+Frontend доступен: `http://localhost:3000`
 
-#### 4.4 Сборка для продакшена
+---
+
+## 📚 Документация
+
+| Документ | Описание |
+|----------|----------|
+| [📖 Руководство по запуску](./docs/SETUP_GUIDE.md) | Детальная пошаговая инструкция по установке и настройке |
+| [🔧 Команды для разработки](./docs/COMMANDS.md) | Полный справочник всех команд |
+| [📝 Changelog](./docs/CHANGELOG.md) | История изменений проекта |
+| [📋 Release Notes](./docs/RELEASE_NOTES.md) | Заметки о релизах с техническими деталями |
+
+---
+
+## 🔧 Основные команды
+
+### Backend
+
 ```bash
-# Создание production билда
-npm run build
-
-# Запуск production сервера
-npm run start
-
-# Линтинг кода
-npm run lint
+cd backend
+go mod download      # Установка зависимостей
+make run            # Запуск сервера
+make test           # Запуск тестов
+make build          # Сборка бинарного файла
+make lint           # Линтинг кода
 ```
 
-### Шаг 5: Запуск через Docker Compose (рекомендуется)
+### Frontend
 
-#### 5.1 Запуск всех сервисов
 ```bash
-cd tolk-discount
-docker compose up -d
+cd frontend
+npm install         # Установка зависимостей
+npm run dev         # Запуск dev сервера
+npm run build       # Production сборка
+npm run test        # Запуск тестов
+npm run lint        # Линтинг кода
 ```
 
-#### 5.2 Просмотр логов
-```bash
-# Все логи
-docker compose logs -f
+### Docker
 
-# Логи конкретного сервиса
-docker compose logs -f backend
-docker compose logs -f frontend
-docker compose logs -f postgres
-docker compose logs -f redis
-docker compose logs -f nats
+```bash
+docker compose up -d        # Запуск сервисов
+docker compose down         # Остановка сервисов
+docker compose logs -f      # Просмотр логов
+docker compose ps           # Статус сервисов
 ```
 
-#### 5.3 Остановка сервисов
-```bash
-docker compose down
-```
-
-#### 5.4 Остановка с удалением данных
-```bash
-docker compose down -v
-```
-
-#### 5.5 Пересборка контейнеров
-```bash
-docker compose up -d --build
-```
-
-### Шаг 6: Проверка работоспособности
-
-#### 6.1 Health Check эндпоинты
-```bash
-# Проверка backend
-curl http://localhost:8080/health
-
-# Проверка frontend
-curl http://localhost:3000
-```
-
-#### 6.2 Тестовые API запросы
-```bash
-# Получение списка скидок
-curl http://localhost:8080/api/v1/discounts
-
-# Авторизация
-curl -X POST http://localhost:8080/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"password123"}'
-```
-
-### Шаг 7: Мониторинг и отладка
-
-#### 7.1 Prometheus Metrics
-```bash
-# Метрики backend
-curl http://localhost:8080/metrics
-```
-
-#### 7.2 Jaeger Tracing (если включен)
-Откройте `http://localhost:16686` для просмотра трейсов
-
-#### 7.3 Grafana Dashboard (если включен)
-Откройте `http://localhost:3001` (логин: admin, пароль: admin)
+> **📚 Полный список команд:** [Команды для разработки](./docs/COMMANDS.md)
 
 ---
 
