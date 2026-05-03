@@ -1,52 +1,19 @@
-# Examples
+# Documentation files are source content - no need to ignore documentation files like CHANGELOG.md, COMMANDS.md, RELEASE_NOTES.md, SETUP_GUIDE.md
+# README.md is also source content
 
-    Input:
-    ### Added files:
-    [src/main.py, README.md, config.json]
+# No build artifacts, dependencies, or temporary files detected in changes
+# Only documentation files were added/modified
 
-    ### Deleted files:
-    [old/unused.py]
-    ### Modified files:
-    [utils.py]
-    ###current .gitignore Content
-    (empty)
-    Expected Output:
-    (empty — output nothing)
+# Therefore, no additional ignore rules are needed beyond what might already exist for general project types
 
-# Example 2 (Project with artifacts):
-Input:
-### Added files:
-[pycache/main.cpython-310.pyc, dist/app.js, .env.local, .vscode/settings.json
+# If this were a typical project, you might want these common rules:
+# __pycache__/
+# *.pyc
+# .env
+# .env.local
+# .vscode/
+# .idea/
+# *.log
+# .gitignore
 
-### Deleted files:
-    []
-
-### Modified files:
-[]
-### current .gitignore Content
-*.log
-Expected Output:
-    #Compiled and build artifacts
-    *.pyc
-    pycache/
-    *.o
-    *.obj
-    dist/
-    build/
-    #Dependencies
-    .venv/
-    venv/
-    node_modules/
-    #Logs and temp files
-    *.log
-    *.tmp
-    *.swp
-    #Environment
-    .env
-    .env.local
-    .env.
-    #Editors
-    .vscode/
-    .idea/
-    #Original rules preserved
-    *.log
+# However, since only documentation was changed, keeping .gitignore empty makes sense for this specific case.
