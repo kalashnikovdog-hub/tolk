@@ -4,6 +4,7 @@ import Navigation from './components/Navigation'
 import DiscountCard from './components/DiscountCard'
 import SearchFilter from './components/SearchFilter'
 import HomePage from './pages/HomePage'
+import AdminPanel from './pages/AdminPanel'
 import { useUIStore, useDiscountStore } from './hooks/stores'
 import { discountAPI } from './utils/api'
 import { Percent, BookOpen, Heart, Users, CreditCard } from 'lucide-react'
@@ -67,6 +68,11 @@ function App() {
   }
 
   const renderContent = () => {
+    // Admin panel is a separate full-page component
+    if (currentTab === 'admin') {
+      return <AdminPanel />
+    }
+    
     switch (currentTab) {
       case 'home':
         return <HomePage />

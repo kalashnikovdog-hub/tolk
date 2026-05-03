@@ -12,7 +12,7 @@ import logging
 
 from app.config.settings import settings
 from app.config.database import init_db, close_db
-from app.api.routes import auth, users, discounts, stores, categories, collections, health
+from app.api.routes import auth, users, discounts, stores, categories, collections, health, admin
 from app.core.middleware import RateLimitMiddleware
 from app.core.cache import CacheManager
 from app.core.exceptions import AppException, AppExceptionHandlers
@@ -105,6 +105,7 @@ def create_application() -> FastAPI:
     app.include_router(stores.router, prefix=f"{settings.API_PREFIX}/stores", tags=["Stores"])
     app.include_router(categories.router, prefix=f"{settings.API_PREFIX}/categories", tags=["Categories"])
     app.include_router(collections.router, prefix=f"{settings.API_PREFIX}/collections", tags=["Collections"])
+    app.include_router(admin.router, prefix=f"{settings.API_PREFIX}/admin", tags=["Admin"])
     
     @app.get("/", tags=["Root"])
     async def root():

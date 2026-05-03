@@ -238,6 +238,59 @@ scrapy crawl grocery_spider
 python -m schedulers.main
 ```
 
+## 👹 Discount Daemon
+
+Новый сервис для автоматического сбора скидок из Telegram каналов и веб-сайтов.
+
+### Возможности
+- **Telegram мониторинг**: Отслеживание скидок в указанных каналах
+- **Веб-скрапинг**: Парсинг сайтов магазинов
+- **Расписание**: Автоматический запуск через заданные интервалы
+- **Ручной запуск**: Сбор по команде
+
+### Быстрый старт
+
+```bash
+cd daemon
+
+# Установка зависимостей
+pip install -r requirements.txt
+
+# Настройка (.env)
+cp .env.example .env
+# Отредактируйте .env, указав TELEGRAM_API_ID и TELEGRAM_API_HASH
+
+# Запуск демона
+python discount_daemon.py --command run
+
+# Или однократный запуск
+python discount_daemon.py --command scrape
+```
+
+### Docker Compose
+
+Daemon уже включен в основной `docker-compose.yml`:
+
+```bash
+# Запуск с daemon
+docker-compose up -d daemon
+
+# Просмотр логов
+docker-compose logs -f daemon
+```
+
+### Переменные окружения
+
+| Переменная | Описание | Пример |
+|------------|----------|--------|
+| `DATABASE_URL` | URL базы данных | `postgresql://...` |
+| `TELEGRAM_API_ID` | API ID из my.telegram.org | `12345678` |
+| `TELEGRAM_API_HASH` | API Hash из my.telegram.org | `abc123...` |
+| `TELEGRAM_CHANNELS` | Каналы для мониторинга | `skidki_online,golddays` |
+| `SCRAPE_INTERVAL` | Интервал скрапинга (часы) | `6` |
+
+Подробнее см. [daemon/README.md](daemon/README.md)
+
 ## 📊 База данных
 
 ### Основные модели

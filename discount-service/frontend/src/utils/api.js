@@ -53,6 +53,43 @@ export const discountAPI = {
   getBankOffers: () => api.get('/discounts/bank-offers'),
 }
 
+export const adminAPI = {
+  // Discounts
+  getDiscounts: (params) => api.get('/admin/discounts', { params }),
+  getDiscount: (id) => api.get(`/admin/discounts/${id}`),
+  createDiscount: (data) => api.post('/admin/discounts', data),
+  updateDiscount: (id, data) => api.put(`/admin/discounts/${id}`, data),
+  deleteDiscount: (id) => api.delete(`/admin/discounts/${id}`),
+  bulkDelete: (ids) => api.post('/admin/discounts/bulk-delete', { discount_ids: ids }),
+  bulkVerify: (ids, verified) => api.post('/admin/discounts/bulk-verify', { discount_ids: ids, verified }),
+  
+  // Stores
+  getStores: () => api.get('/admin/stores'),
+  createStore: (data) => api.post('/admin/stores', data),
+  updateStore: (id, data) => api.put(`/admin/stores/${id}`, data),
+  deleteStore: (id) => api.delete(`/admin/stores/${id}`),
+  
+  // Daemon
+  getDaemonStatus: () => api.get('/admin/daemon/status'),
+  startDaemon: () => api.post('/admin/daemon/start'),
+  stopDaemon: () => api.post('/admin/daemon/stop'),
+  runDaemonNow: () => api.post('/admin/daemon/run-now'),
+  daemonAction: (action) => {
+    if (action === 'start') return adminAPI.startDaemon()
+    if (action === 'stop') return adminAPI.stopDaemon()
+    if (action === 'run-now') return adminAPI.runDaemonNow()
+  },
+  
+  // Sources
+  getSources: () => api.get('/admin/daemon/sources'),
+  createSource: (data) => api.post('/admin/daemon/sources', data),
+  updateSource: (id, data) => api.put(`/admin/daemon/sources/${id}`, data),
+  deleteSource: (id) => api.delete(`/admin/daemon/sources/${id}`),
+  
+  // Statistics
+  getStatistics: () => api.get('/admin/statistics/overview'),
+}
+
 export const collectionAPI = {
   getAll: () => api.get('/collections'),
   create: (data) => api.post('/collections', data),
