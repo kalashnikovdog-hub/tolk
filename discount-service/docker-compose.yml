@@ -113,6 +113,27 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  # Discount Daemon (for scheduled scraping)
+  daemon:
+    build:
+      context: ./daemon
+      dockerfile: Dockerfile
+    container_name: discount_daemon
+    volumes:
+      - ./daemon:/app
+      - daemon_logs:/var/log
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/discounts
+      TELEGRAM_API_ID: ${TELEGRAM_API_ID:-}
+      TELEGRAM_API_HASH: ${TELEGRAM_API_HASH:-}
+      TELEGRAM_CHANNELS: ${TELEGRAM_CHANNELS:-skidki_online,golddays,edadeal}
+      SCRAPE_INTERVAL: ${SCRAPE_INTERVAL:-6}
+      TARGET_WEBSITES: '${TARGET_WEBSITES:-[{"name": "Пятерочка", "url": "https://5ka.ru/promo", "type": "grocery"}]}'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
   # Nginx Reverse Proxy
   nginx:
     image: nginx:alpine
@@ -130,6 +151,7 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  daemon_logs:
 
 networks:
   default:

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Home, Search, Heart, Users, BookOpen, User, Menu, X } from 'lucide-react'
+import { Home, Search, Heart, Users, BookOpen, User, Menu, X, Shield } from 'lucide-react'
 import { useUIStore, useAuthStore } from '../hooks/stores'
 
 const navItems = [
@@ -11,9 +11,15 @@ const navItems = [
   { id: 'profile', label: 'Профиль', icon: User },
 ]
 
+// Admin-only navigation items (shown separately)
+const adminNavItem = { id: 'admin', label: 'Админ', icon: Shield }
+
 const Navigation = () => {
   const { currentTab, setTab, isMobileMenuOpen, toggleMobileMenu } = useUIStore()
-  const { isAuthenticated } = useAuthStore()
+  const { isAuthenticated, user } = useAuthStore()
+  
+  // Check if user is admin
+  const isAdmin = user && ['admin@tolk.ru', 'admin@example.com'].includes(user.email)
 
   return (
     <>
@@ -54,6 +60,27 @@ const Navigation = () => {
               </motion.button>
             )
           })}
+          
+          {/* Admin Link - Only shown to admins */}
+          {isAdmin && (
+            <motion.button
+              onClick={() => setTab('admin')}
+              whileHover={{ scale: 1.02, x: 4 }}
+              whileTap={{ scale: 0.98 }}
+              className={`w-full ${currentTab === 'admin' ? 'nav-item-glass-active' : 'nav-item-glass'}`}
+            >
+              <div className={`p-2 rounded-lg ${currentTab === 'admin' ? 'bg-indigo-500/20' : ''}`}>
+                <Shield className={`w-5 h-5 ${currentTab === 'admin' ? 'text-indigo-600' : ''}`} />
+              </div>
+              <span className="font-medium">Админ-панель</span>
+              {currentTab === 'admin' && (
+                <motion.div
+                  layoutId="activeNav"
+                  className="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-500"
+                />
+              )}
+            </motion.button>
+          )}
         </div>
         
         {/* Subscription CTA - Glass */}

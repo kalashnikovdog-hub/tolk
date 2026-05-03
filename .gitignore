@@ -1,80 +1,61 @@
 ```
-# Go-specific ignores
-go.sum
-*.mod
-*.sum
-vendor/
-
 # Dependencies
-node_modules/
-**/node_modules/
-venv/
-.venv/
 __pycache__/
-*.egg-info/
-.Python-version
-
-# Build artifacts
-build/
-dist/
-target/
-*.o
-*.obj
-*.exe
-*.dll
-*.so
-*.a
-*.out
-
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-*.swo
-
-# Environment
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
 .env
 .env.local
 .env.*
 
-# Editors
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logs
+*.log
+*.out
+
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS specific
+# OS
 .DS_Store
 Thumbs.db
 
-# Testing and coverage
+# Coverage
 .coverage
 coverage/
 htmlcov/
-.pytest_cache/
-.mypy_cache/
 
-# Compressed files
-*.zip
-*.gz
-*.tar
-*.tgz
-*.bz2
-*.xz
-*.7z
-*.rar
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
+# Distribution / packaging
+.Python
+_build/
+buck-out/
+build/
+dist/
 ```
