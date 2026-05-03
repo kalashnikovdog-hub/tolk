@@ -176,37 +176,431 @@ breaker := circuitbreaker.New(circuitbreaker.Config{
 ## 🚀 Быстрый старт
 
 ### Требования
+
 - Go 1.21+
 - Node.js 20+
 - Docker & Docker Compose
 - kubectl (для Kubernetes)
 
-### Локальная разработка
+---
+
+## 📖 Детальная инструкция по запуску на локальном сервере
+
+### Шаг 1: Подготовка окружения
+
+#### 1.1 Установка Go
+```bash
+# macOS
+brew install go@1.21
+
+# Linux
+wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz
+sudo tar -xvf go1.21.0.linux-amd64.tar.gz -C /usr/local
+export PATH=$PATH:/usr/local/go/bin
+
+# Проверка версии
+go version
+```
+
+#### 1.2 Установка Node.js
+```bash
+# macOS
+brew install node@20
+
+# Linux (Ubuntu/Debian)
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Проверка версии
+node --version
+npm --version
+```
+
+#### 1.3 Установка Docker
+```bash
+# macOS/Windows - скачать с https://docker.com
+# Linux
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+
+# Проверка
+docker --version
+docker compose version
+```
+
+### Шаг 2: Клонирование репозитория
 
 ```bash
-# Backend
-cd discount-service-new/backend
+git clone <repository-url>
+cd tolk-discount
+```
+
+### Шаг 3: Запуск Backend (Go)
+
+#### 3.1 Установка зависимостей
+```bash
+cd backend
 go mod download
+```
+
+#### 3.2 Настройка переменных окружения
+Создайте файл `.env` в папке `backend`:
+```bash
+# Server
+PORT=8080
+ENV=development
+
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=tolk_discount
+DB_USER=postgres
+DB_PASSWORD=postgres
+
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
+# NATS
+NATS_URL=nats://localhost:4222
+
+# JWT
+JWT_SECRET=your-secret-key-here
+JWT_EXPIRY=24h
+```
+
+#### 3.3 Запуск миграций БД (если требуется)
+```bash
+make migrate
+```
+
+#### 3.4 Запуск сервера разработки
+```bash
+# Через Makefile
 make run
 
-# Frontend
-cd discount-service-new/frontend
+# Или напрямую
+go run cmd/main.go
+```
+
+Backend будет доступен по адресу: `http://localhost:8080`
+
+#### 3.5 Запуск тестов
+```bash
+make test
+```
+
+#### 3.6 Сборка бинарного файла
+```bash
+make build
+# Бинарный файл появится в ./bin/server
+```
+
+### Шаг 4: Запуск Frontend (Next.js)
+
+#### 4.1 Установка зависимостей
+```bash
+cd frontend
 npm install
+```
+
+#### 4.2 Настройка переменных окружения
+Создайте файл `.env.local` в папке `frontend`:
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8080
+NEXT_PUBLIC_APP_NAME=Tolk Discount
+```
+
+#### 4.3 Запуск сервера разработки
+```bash
 npm run dev
 ```
 
-### Docker Compose
+Frontend будет доступен по адресу: `http://localhost:3000`
 
+#### 4.4 Сборка для продакшена
 ```bash
-cd discount-service-new
-docker-compose up -d
+# Создание production билда
+npm run build
+
+# Запуск production сервера
+npm run start
+
+# Линтинг кода
+npm run lint
 ```
 
-### Kubernetes
+### Шаг 5: Запуск через Docker Compose (рекомендуется)
 
+#### 5.1 Запуск всех сервисов
 ```bash
-kubectl apply -f infrastructure/k8s/
+cd tolk-discount
+docker compose up -d
 ```
+
+#### 5.2 Просмотр логов
+```bash
+# Все логи
+docker compose logs -f
+
+# Логи конкретного сервиса
+docker compose logs -f backend
+docker compose logs -f frontend
+docker compose logs -f postgres
+docker compose logs -f redis
+docker compose logs -f nats
+```
+
+#### 5.3 Остановка сервисов
+```bash
+docker compose down
+```
+
+#### 5.4 Остановка с удалением данных
+```bash
+docker compose down -v
+```
+
+#### 5.5 Пересборка контейнеров
+```bash
+docker compose up -d --build
+```
+
+### Шаг 6: Проверка работоспособности
+
+#### 6.1 Health Check эндпоинты
+```bash
+# Проверка backend
+curl http://localhost:8080/health
+
+# Проверка frontend
+curl http://localhost:3000
+```
+
+#### 6.2 Тестовые API запросы
+```bash
+# Получение списка скидок
+curl http://localhost:8080/api/v1/discounts
+
+# Авторизация
+curl -X POST http://localhost:8080/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
+```
+
+### Шаг 7: Мониторинг и отладка
+
+#### 7.1 Prometheus Metrics
+```bash
+# Метрики backend
+curl http://localhost:8080/metrics
+```
+
+#### 7.2 Jaeger Tracing (если включен)
+Откройте `http://localhost:16686` для просмотра трейсов
+
+#### 7.3 Grafana Dashboard (если включен)
+Откройте `http://localhost:3001` (логин: admin, пароль: admin)
+
+---
+
+## 🔧 Команды для разработки
+
+### Backend команды
+```bash
+# Установка зависимостей
+go mod download
+
+# Запуск в режиме разработки
+go run cmd/main.go
+
+# Сборка
+go build -o bin/server cmd/main.go
+
+# Запуск тестов
+go test ./... -v
+
+# Запуск тестов с покрытием
+go test ./... -coverprofile=coverage.out
+go tool cover -html=coverage.out
+
+# Форматирование кода
+go fmt ./...
+
+# Веттинг кода
+go vet ./...
+
+# Запуск линтера (требуется golangci-lint)
+golangci-lint run
+```
+
+### Frontend команды
+```bash
+# Установка зависимостей
+npm install
+
+# Запуск dev сервера
+npm run dev
+
+# Сборка для продакшена
+npm run build
+
+# Запуск production сервера
+npm run start
+
+# Запуск тестов
+npm run test
+
+# Линтинг кода
+npm run lint
+
+# Форматирование кода
+npx prettier --write .
+```
+
+### Docker команды
+```bash
+# Запуск всех сервисов
+docker compose up -d
+
+# Остановка всех сервисов
+docker compose down
+
+# Пересборка и запуск
+docker compose up -d --build
+
+# Просмотр логов
+docker compose logs -f
+
+# Выполнение команды в контейнере
+docker compose exec backend sh
+docker compose exec frontend sh
+
+# Очистка кэша Docker
+docker system prune -a
+```
+
+---
+
+## 📝 Changelog
+
+### v2.0.0 (2026-05-03) - Мажорный релиз
+
+**Перенос и рефакторинг discount-service в tolk-discount с переходом на Go**
+
+#### Ключевые изменения:
+- ✅ Создан новый сервис tolk-discount с архитектурой v2.0
+- ✅ Миграция backend с Python/FastAPI на Go + gRPC
+- ✅ Обновлен frontend с React/Vite на Next.js 14 App Router
+- ✅ Добавлена поддержка Redis Cluster для кэширования
+- ✅ Интеграция NATS JetStream для асинхронной обработки
+- ✅ Реализован Circuit Breaker pattern для отказоустойчивости
+- ✅ Добавлены middleware для метрик, rate limiting и логирования
+- ✅ Интеграция Prometheus для мониторинга
+- ✅ Поддержка распределенного трассирования (Jaeger/OpenTelemetry)
+
+#### Новые компоненты:
+- **API Gateway** на Go с поддержкой middleware, кэширования и circuit breaker
+- **Auth Service** с JWT token management и OAuth2
+- **Discount Service** с CRUD операциями и персональными рекомендациями
+- **Collection Service** для управления подборками
+- **Family Card Service** для семейных карт
+
+#### Улучшения архитектуры:
+- PostgreSQL + Patroni для высокой доступности
+- Redis Cluster для сессионного хранилища и кэширования
+- TimescaleDB для аналитики событий
+- Istio Service Mesh с circuit breaker и retry logic
+- Kubernetes оркестрация с HPA
+
+#### Удалено:
+- ❌ Старый discount-service на Python
+- ❌ Celery очереди задач
+- ❌ Docker Compose-only архитектура
+
+---
+
+### v1.0.0 (2026-05-03) - Исходная версия
+
+**Merge pull request #9 - Update from task 638b3764-810a-4807-8735-da3fdb3624f0**
+
+#### Компоненты:
+- **Backend**: FastAPI (Python)
+  - REST API для управления скидками
+  - Authentication/Authorization
+  - Интеграция с PostgreSQL и Redis
+  
+- **Frontend**: React + Vite
+  - SPA приложение с маршрутизацией
+  - Компоненты: DiscountCard, Navigation, SearchFilter
+  - Страницы: HomePage, AdminPanel
+  
+- **Scraper**: Scrapy (Python)
+  - Парсинг сайтов магазинов
+  - Автоматическое обновление скидок
+  
+- **Daemon**: фоновые задачи
+  - Периодическая проверка скидок
+  - Отправка уведомлений
+
+#### Функционал:
+- CRUD операции со скидками
+- Поиск и фильтрация
+- Админ-панель для управления
+- Семейные карты
+- Подборки скидок
+
+---
+
+## 📈 История версий
+
+| Версия | Дата | Тип | Описание |
+|--------|------|-----|----------|
+| 2.0.0 | 2026-05-03 | Major | Полный рефакторинг на Go, новая архитектура |
+| 1.0.0 | 2026-05-03 | Initial | Первая версия на Python/FastAPI |
+
+---
+
+## 📋 Release Notes
+
+### Release v2.0.0
+
+**Дата релиза:** 3 мая 2026
+
+**Цели релиза:**
+- Увеличение производительности в 10-20 раз
+- Повышение отказоустойчивости системы
+- Масштабирование до 10,000+ RPS
+- Улучшение наблюдаемости (monitoring, tracing, logging)
+
+**Критические изменения:**
+- Изменение языка backend с Python на Go
+- Изменение протокола коммуникации с REST на gRPC
+- Миграция схемы базы данных
+- Изменение формата JWT токенов
+
+**Миграция с v1 на v2:**
+```bash
+# Экспорт данных из старой БД
+pg_dump -h old-host -U postgres tolk_discount > backup.sql
+
+# Импорт в новую БД
+psql -h new-host -U postgres tolk_discount_v2 < backup.sql
+
+# Обновление конфигов
+# Обновить переменные окружения согласно новому формату
+```
+
+**Известные проблемы:**
+- Нет известных проблем на момент релиза
+
+**Планы на будущее:**
+- Добавление GraphQL API
+- Интеграция с machine learning для рекомендаций
+- Поддержка WebSocket для real-time обновлений
+
+---
 
 ## 📈 Производительность
 
