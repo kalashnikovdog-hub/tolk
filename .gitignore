@@ -1,5 +1,4 @@
 ```
-# Go build artifacts
-go.mod
-go.sum
+# Compiled and build artifacts
+*
 ```
