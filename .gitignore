@@ -1,41 +1,5 @@
 ```
-# Dependencies
-node_modules/
-
-# Build outputs
-.next/
-dist/
-build/
-
-# Environment variables
-.env
-.env.local
-*.env.*
-
-# IDE specific
-.vscode/
-.idea/
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Python related
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Coverage reports
-coverage/
-htmlcov/
-*.coverage
-
-# Temporary files
-*.tmp
-*.swp
-*~
+# Go build artifacts
+go.mod
+go.sum
 ```
