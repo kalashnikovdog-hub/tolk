@@ -54,7 +54,6 @@ const nextConfig = {
   },
   
   experimental: {
-    serverActions: true,
     serverComponentsExternalPackages: ['@node-rs/*'],
   },
   
