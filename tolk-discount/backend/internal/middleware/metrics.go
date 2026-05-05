@@ -37,13 +37,6 @@ var (
 		},
 	)
 
-	goRoutines = promauto.NewGauge(
-		prometheus.GaugeOpts{
-			Name: "go_goroutines",
-			Help: "Number of Go routines",
-		},
-	)
-
 	memoryUsage = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "go_memory_usage_bytes",
@@ -86,7 +79,6 @@ func updateGoMetrics() {
 	var m runtime.MemStats
 	runtime.ReadMemStats(&m)
 	
-	goRoutines.Set(float64(runtime.NumGoroutine()))
 	memoryUsage.WithLabelValues("alloc").Set(float64(m.Alloc))
 	memoryUsage.WithLabelValues("sys").Set(float64(m.Sys))
 	memoryUsage.WithLabelValues("heap_alloc").Set(float64(m.HeapAlloc))
