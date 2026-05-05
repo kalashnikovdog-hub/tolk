@@ -1,51 +1,41 @@
 ```
 # Dependencies
 node_modules/
-package-lock.json
 
-# Environment
+# Build outputs
+.next/
+dist/
+build/
+
+# Environment variables
 .env
 .env.local
 *.env.*
 
-# Logs and temp files
-*.log
-*.tmp
-
-# Editors
+# IDE specific
 .vscode/
 .idea/
 
-# Build artifacts
-dist/
-build/
-*.o
-*.obj
-*.exe
-*.dll
-*.so
-*.a
-*.out
+# OS generated files
+.DS_Store
+Thumbs.db
 
-# Python specific
+# Logs
+*.log
+
+# Python related
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-.git*
-!Makefile
+
+# Coverage reports
+coverage/
+htmlcov/
+*.coverage
+
+# Temporary files
+*.tmp
+*.swp
+*~
 ```
